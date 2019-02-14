@@ -3,11 +3,11 @@
 
 Estimated Time: 60 minutes
 
-All tasks in this lab are performed from the Azure portal (including a PowerShell Cloud Shell session) except for Excercise 2 Task 2 and Exercise 2 Task 3, which include steps performed from a Remote Desktop session to an Azure VM
+All tasks in this lab are performed from the Azure portal (including a PowerShell Cloud Shell session) except for Exercise 2 Task 2 and Exercise 2 Task 3, which include steps performed from a Remote Desktop session to an Azure VM
 
    > **Note**: When not using Cloud Shell, the lab virtual machine must have Azure PowerShell module installed [**https://docs.microsoft.com/en-us/powershell/azure/install-azurerm-ps?view=azurermps-6.12.0**](https://docs.microsoft.com/en-us/powershell/azure/install-azurerm-ps?view=azurermps-6.12.0)
 
-Lab files: 
+Lab files:
 
 -  **F:\\Labfiles\\AZ100\\Mod03\\az-100-03_deploy_azure_vm.ps1**
 
@@ -18,12 +18,12 @@ Lab files:
 -  **F:\\Labfiles\\AZ100\\Mod03\\az-100-03_install_iis_vmss.zip**
 
 ### Scenario
-  
+
 Adatum Corporation wants to implement its workloads by using Azure virtual machines (VMs) and Azure VM scale sets
 
 
 ### Objectives
-  
+
 After completing this lab, you will be able to:
 
 -  Deploy Azure VMs by using the Azure portal, Azure PowerShell, and Azure Resource Manager templates
@@ -34,7 +34,7 @@ After completing this lab, you will be able to:
 
 
 ## Exercise 1: Deploy Azure VMs by using the Azure portal, Azure PowerShell, and Azure Resource Manager templates
-  
+
 Estimated Time: 25 minutes
 
 The main tasks for this exercise are as follows:
@@ -119,7 +119,7 @@ The main tasks for this exercise are as follows:
 
 #### Task 2: Deploy an Azure VM running Windows Server 2016 Datacenter into the existing availability set by using Azure PowerShell
 
-1. From the Azure Portal, start a PowerShell session in the Cloud Shell pane. 
+1. From the Azure Portal, start a PowerShell session in the Cloud Shell pane.
 
    > **Note**: If this is the first time you are launching the Cloud Shell in the current Azure subscription, you will be asked to create an Azure file share to persist Cloud Shell files. If so, accept the defaults, which will result in creation of a storage account in an automatically generated resource group.
 
@@ -155,7 +155,7 @@ The main tasks for this exercise are as follows:
 
    ```
    $nsg = New-AzureRmNetworkSecurityGroup -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -Name "$vmName-nsg"
-   $pip = New-AzureRmPublicIpAddress -Name "$vmName-ip" -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -AllocationMethod Dynamic 
+   $pip = New-AzureRmPublicIpAddress -Name "$vmName-ip" -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -AllocationMethod Dynamic
    $nic = New-AzureRmNetworkInterface -Name "$($vmName)$(Get-Random)" -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -SubnetId $subnetid -PublicIpAddressId $pip.Id -NetworkSecurityGroupId $nsg.Id
    ```
 
@@ -196,7 +196,7 @@ The main tasks for this exercise are as follows:
    ```
    $vmConfig = New-AzureRmVMConfig -VMName $vmName -VMSize $vmSize -AvailabilitySetId $availabilitySet.Id
    Add-AzureRmVMNetworkInterface -VM $vmConfig -Id $nic.Id
-   Set-AzureRmVMOperatingSystem -VM $vmConfig -Windows -ComputerName $vmName -Credential $adminCreds 
+   Set-AzureRmVMOperatingSystem -VM $vmConfig -Windows -ComputerName $vmName -Credential $adminCreds
    Set-AzureRmVMSourceImage -VM $vmConfig -PublisherName $publisherName -Offer $offerName -Skus $skuName -Version 'latest'
    Set-AzureRmVMOSDisk -VM $vmConfig -Name "$($vmName)_OsDisk_1_$(Get-Random)" -StorageAccountType $osDiskType -CreateOption fromImage
    Set-AzureRmVMBootDiagnostics -VM $vmConfig -Disable
@@ -225,17 +225,17 @@ The main tasks for this exercise are as follows:
 
 1. On the **Custom deployment** blade, select the **Build your own template in the editor**.
 
-1. From the **Edit template** blade, load the template file **F:\\Labfiles\\AZ100\\Mod03\\az-100-03_azuredeploy.json**. 
+1. From the **Edit template** blade, load the template file **F:\\Labfiles\\AZ100\\Mod03\\az-100-03_azuredeploy.json**.
 
    > **Note**: Review the content of the template and note that it defines deployment of two Azure VMs hosting Linux Ubuntu into an availability set and into the existing virtual network **az1000301-vnet0**.
 
-1. Save the template and return to the **Custom deployment** blade. 
+1. Save the template and return to the **Custom deployment** blade.
 
 1. From the **Custom deployment** blade, navigate to the **Edit parameters** blade.
 
-1. From the **Edit parameters** blade, load the parameters file **F:\\Labfiles\\AZ100\\Mod03\\az-100-03_azuredeploy.parameters.json**. 
+1. From the **Edit parameters** blade, load the parameters file **F:\\Labfiles\\AZ100\\Mod03\\az-100-03_azuredeploy.parameters.json**.
 
-1. Save the parameters and return to the **Custom deployment** blade. 
+1. Save the parameters and return to the **Custom deployment** blade.
 
 1. From the **Custom deployment** blade, initiate a template deployment with the following settings:
 
@@ -255,7 +255,7 @@ The main tasks for this exercise are as follows:
 
     - Admin Password: **Pa55w.rd1234**
 
-    - Virtual Network Name: **az1000301-vnet1**
+    - Virtual Network Name: **az1000301-vnet0**
 
     - Image Publisher: **Canonical**
 
@@ -273,7 +273,7 @@ The main tasks for this exercise are as follows:
 
 
 ## Exercise 2: Configure networking settings of Azure VMs running Windows and Linux operating systems
-  
+
 Estimated Time: 10 minutes
 
 The main tasks for this exercise are as follows:
@@ -338,7 +338,7 @@ The main tasks for this exercise are as follows:
 
     - Name: **AllowInternetRDPInBound**
 
-1. In the Azure portal, display the **Overview** pane of the **az1000301-vm0** blade. 
+1. In the Azure portal, display the **Overview** pane of the **az1000301-vm0** blade.
 
 1. From the **Overview** pane of the **az1000301-vm0** blade, generate an RDP file and use it to connect to **az1000301-vm0**.
 
@@ -350,7 +350,7 @@ The main tasks for this exercise are as follows:
 
 
 #### Task 3: Connect to an Azure VM running Linux Ubuntu Server via a private IP address
- 
+
 1. Within the RDP session to **az1000301-vm0**, start **Command Prompt**.
 
 1. From the Command Prompt, run the following:
@@ -361,11 +361,11 @@ The main tasks for this exercise are as follows:
 
 1. Examine the output and note that the name resolves to the IP address you assigned in the first task of this exercise (**10.103.0.100**).
 
-   > **Note**: This is expected. Azure provides built-in DNS name resolution within a virtual network. 
+   > **Note**: This is expected. Azure provides built-in DNS name resolution within a virtual network.
 
 1. Within the RDP session to **az1000301-vm0**, from Server Manager, disable temporarily **IE Enhanced Security Configuration**.
 
-1. Within the RDP session to **az1000301-vm0**, start Internet Explorer and download **putty.exe** from [**https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html**](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 
+1. Within the RDP session to **az1000301-vm0**, start Internet Explorer and download **putty.exe** from [**https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html**](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
 
 1. Use **putty.exe** to verify that you can successfully connect to **az1000302-vm0** on its private IP address via the **SSH** protocol (TCP 22).
 
@@ -381,7 +381,7 @@ The main tasks for this exercise are as follows:
 
 1. From the **az1000302-vm0** blade, navigate to the **az1000302-vm0 - Networking** blade.
 
-1. On the **az1000302-vm0 - Networking** blade, review the inbound port rules of the network security group assigned to the network interface of **az1000301-vm0** to determine why your SSH connection via the private IP address was successsful.
+1. On the **az1000302-vm0 - Networking** blade, review the inbound port rules of the network security group assigned to the network interface of **az1000301-vm0** to determine why your SSH connection via the private IP address was successful.
 
    > **Note**: The default configuration consisting of built-in rules allows inbound connections within the Azure virtual network environment (including connections via the SSH port TCP 22).
 
@@ -403,7 +403,7 @@ The main tasks for this exercise are as follows:
 
 #### Task 1: Identify an available DNS name for an Azure VM scale set deployment
 
-1. From the Azure Portal, start a PowerShell session in the Cloud Shell pane. 
+1. From the Azure Portal, start a PowerShell session in the Cloud Shell pane.
 
 1. In the Cloud Shell pane, run the following command, substituting the placeholder `<custom-label>` with any string which is likely to be unique and the placeholder `<location-of-az1000301-RG>` with the name of the Azure region in which you created the **az1000301-RG** resource group.
 
@@ -411,7 +411,7 @@ The main tasks for this exercise are as follows:
    Test-AzureRmDnsAvailability -DomainNameLabel <custom-label> -Location '<location-of-az1000301-RG>'
    ```
 
-1. Verify that the command returned **True**. If not, rerun the same command with a different value of the `<custom-label>` until the command returns **True**. 
+1. Verify that the command returned **True**. If not, rerun the same command with a different value of the `<custom-label>` until the command returns **True**.
 
 1. Note the value of the `<custom-label>` that resulted in the successful outcome. You will need it in the next task
 
@@ -499,14 +499,14 @@ The main tasks for this exercise are as follows:
 
 1. Navigate to the **az1000303vmss0 - Instances** blade and initiate the upgrade of the **az1000303vmss0_0** instance.
 
-   > **Note**: The update will trigger application of the DSC configration script. Wait for upgrade to complete. This should take about 5 minutes. You can monitor the progress from the **az1000303vmss0 - Instances** blade. 
+   > **Note**: The update will trigger application of the DSC configration script. Wait for upgrade to complete. This should take about 5 minutes. You can monitor the progress from the **az1000303vmss0 - Instances** blade.
 
-1. Once the upgrade completes, navigate to the **Overview** pane of the **az1000303vmss0** blade. 
+1. Once the upgrade completes, navigate to the **Overview** pane of the **az1000303vmss0** blade.
 
 1. On the **az1000303vmss0** blade, note the public IP address assigned to **az1000303vmss0**.
 
 1. Start Microsoft Edge and navigate to the public IP address you identified in the previous step.
 
-1. Verify that the browser displays the default IIS home page. 
+1. Verify that the browser displays the default IIS home page.
 
 > **Result**: After you completed this exercise, you have identified an available DNS name for an Azure VM scale set deployment, deployed an Azure VM scale set, and installed IIS on a scale set VM by using the DSC extension.
